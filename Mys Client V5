@@ -2,51 +2,6 @@
 
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
-
-local webhookURL = "https://discordapp.com/api/webhooks/1320878967045230655/0urW5c-hSiUbeyNf_Hd-M04UxCkjNZ1eW5tVniSqjP-Riep6RPDfSjR2ckVK8PnMLYhF"
-
--- Function to get the current time and date
-local function getCurrentDateTime()
-    local time = os.date("*t")
-    return string.format("%02d-%02d-%02d %02d:%02d:%02d", time.year, time.month, time.day, time.hour, time.min, time.sec)
-end
-
--- Function to send data to the webhook
-local function sendToWebhook(dateTime, jobID)
-    local success, errorMessage = pcall(function()
-        local httpService = game:GetService("HttpService")
-        local data = {
-            ["content"] = "Script executed at: " .. dateTime .. "\nJob ID: " .. jobID
-        }
-        local jsonData = httpService:JSONEncode(data)
-        httpService:PostAsync(webhookURL, jsonData, Enum.HttpContentType.ApplicationJson)
-    end)
-
-    if success then
-        print("Successfully sent to Discord webhook.")
-    else
-        warn("Failed to send to Discord webhook: " .. errorMessage)
-    end
-end
-
--- Original environment setup
-getgenv().Game = game
-getgenv().JobID = getgenv().Game.JobId
-getgenv().PlaceID = getgenv().Game.PlaceId
-
--- Send webhook notification
-local dateTime = getCurrentDateTime()
-local jobID = getgenv().JobID or "Unknown Job ID"
-sendToWebhook(dateTime, jobID)
-
-getgenv().Service_Wrap = function(serviceName)
-    if cloneref then
-        return cloneref(getgenv().Game:GetService(serviceName))
-    else
-        return getgenv().Game:GetService(serviceName)
-    end
-end
-
 -- Fully working spoofed variables functions. [ez].
 getgenv().Players = getgenv().Service_Wrap("Players")
 getgenv().ReplicatedStorage = getgenv().Service_Wrap("ReplicatedStorage")
